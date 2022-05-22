@@ -1,22 +1,24 @@
-﻿using ExploreNorthwind.Models;
+﻿using ExploreNorthwind.ConfigurationOptions;
 using ExploreNorthwind.Models.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 
 namespace ExploreNorthwind.Controllers
 {
     public class ProductsController : Controller
     {
         private ProductsRepository productsRepo { get; }
-        public ProductsController(ProductsRepository productsRepo)
+        private ExploreNorthwindOptions Options { get; set; }
+        public ProductsController(ProductsRepository productsRepo, IOptionsSnapshot<ExploreNorthwindOptions> options)
         {
             this.productsRepo = productsRepo;
+            this.Options = options.Value;
         }
 
         public IActionResult Index()
         {
-            List<Product> products = productsRepo.GetAll();
+            var products = productsRepo.Get(Options.ProductsMaxCount);
             return View(products);
         }
     }

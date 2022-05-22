@@ -1,3 +1,4 @@
+using ExploreNorthwind.ConfigurationOptions;
 using ExploreNorthwind.Models.NorthwindDB;
 using ExploreNorthwind.Models.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -28,9 +29,10 @@ namespace ExploreNorthwind
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NorthwindContext")));
+            services.AddDbContext<NorthwindContext>();
             services.AddTransient<CategoriesRepository>();
             services.AddTransient<ProductsRepository>();
+            services.Configure<ExploreNorthwindOptions>(Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

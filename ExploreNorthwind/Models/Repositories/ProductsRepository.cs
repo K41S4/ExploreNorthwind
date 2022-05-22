@@ -1,5 +1,7 @@
-﻿using ExploreNorthwind.Models.NorthwindDB;
+﻿using ExploreNorthwind.ConfigurationOptions;
+using ExploreNorthwind.Models.NorthwindDB;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +16,14 @@ namespace ExploreNorthwind.Models.Repositories
             this.Context = northwindContext;
         }
 
-        public List<Product> GetAll()
+        public IEnumerable<Product> Get(int maxCount)
         {
-            return Context.Products.Include(w => w.Category).Include(w => w.Supplier).ToList();
+            var resultList = Context.Products.Include(w => w.Category).Include(w => w.Supplier).ToList();
+            if (maxCount > 0)
+            {
+                return resultList.Take(maxCount);
+            }
+            return resultList;
         }
     }
 }
