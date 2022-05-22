@@ -8,6 +8,7 @@
 <table>
     <thead>
         <tr>
+            <td>Product ID</td>
             <td>Product Name</td>
             <td>Quantity Per Unit</td>
             <td>Unit Price</td>
@@ -23,6 +24,7 @@
         @foreach (var item in Model)
         {
         <tr>
+            <td>@item.ProductID</td>
             <td>@item.ProductName</td>
             <td>@item.QuantityPerUnit</td>
             <td>@item.UnitPrice</td>
