@@ -1,0 +1,38 @@
+﻿@model List<Product>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Products Page";
+}
+
+<h1>Products list</h1>
+<table>
+    <thead>
+        <tr>
+            <td>Product Name</td>
+            <td>Quantity Per Unit</td>
+            <td>Unit Price</td>
+            <td>Units In Stock</td>
+            <td>Units On Order</td>
+            <td>Reorder Level</td>
+            <td>Discontinued</td>
+            <td>Category Name</td>
+            <td>Supplier Name</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.ProductName</td>
+            <td>@item.QuantityPerUnit</td>
+            <td>@item.UnitPrice</td>
+            <td>@item.UnitsInStock</td>
+            <td>@item.UnitsOnOrder</td>
+            <td>@item.ReorderLevel</td>
+            <td>@item.Discontinued</td>
+            <td>@item.Category.CategoryName</td>
+            <td>@item.Supplier.CompanyName</td>
+        </tr>
+        }
+    </tbody>
+</table>

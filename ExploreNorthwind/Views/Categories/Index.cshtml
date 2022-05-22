@@ -1,0 +1,14 @@
+﻿@model List<Category>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Categories Page";
+}
+
+<h1>Categories list</h1>
+@foreach (var item in Model)
+{
+    <p>
+        <div><b>@item.CategoryName</b> (Id: @item.CategoryID):</div>
+        <div>@item.Description</div>
+    </p>
+}
