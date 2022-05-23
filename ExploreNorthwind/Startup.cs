@@ -32,6 +32,7 @@ namespace ExploreNorthwind
             services.AddDbContext<NorthwindContext>();
             services.AddTransient<CategoriesRepository>();
             services.AddTransient<ProductsRepository>();
+            services.AddTransient<SuppliersRepository>();
             services.Configure<ExploreNorthwindOptions>(Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName));
         }
 
