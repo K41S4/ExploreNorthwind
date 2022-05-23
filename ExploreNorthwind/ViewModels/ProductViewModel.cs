@@ -12,10 +12,10 @@ namespace ExploreNorthwind.ViewModels
     {
         public int ProductID { get; set; }
         [Required]
-        [MinLength(2)]
+        [MinLength(2, ErrorMessage = "Product name length should be at least 2")]
         public string ProductName { get; set; }
         public string QuantityPerUnit { get; set; }
-        [RegularExpression(@"^(0|-?\d{0,16}(\,\d{0,4})?)$", ErrorMessage = "Unit price must follow 0.00 pattern")]
+        [RegularExpression(@"^(0|-?\d{0,16}(\,\d{0,4})?)$", ErrorMessage = "Unit price must follow 0,0000 pattern")]
         [Range(0, double.PositiveInfinity, ErrorMessage = "Unit price value must be positive")]
         public decimal UnitPrice { get; set; }
         [Range(0, short.MaxValue, ErrorMessage = "Units in stock value must be positive")]

@@ -30,6 +30,14 @@ namespace ExploreNorthwind.Controllers
             return View(products);
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var productView = new ProductViewModel(suppliersRepo.GetAll(), categoriesRepo.GetAll());
+            return View(productView);
+        }
+
+        [HttpPost]
         public IActionResult Create(ProductViewModel product)
         {
             product.InitializeSelectLists(suppliersRepo.GetAll(), categoriesRepo.GetAll());

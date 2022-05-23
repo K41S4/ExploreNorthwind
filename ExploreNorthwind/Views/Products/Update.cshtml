@@ -1,48 +1,8 @@
 ﻿@model ExploreNorthwind.ViewModels.ProductViewModel
 @{
-    Layout = "_Layout";
+    ViewData["Title"] = "Edit product";
 }
 
-<h1>Edit</h1>
+<h3 class="p-3">Edit product</h3>
 
-<fieldset>
-    @using (Html.BeginForm())
-    {
-        <div class="form-group">
-            <label asp-for="ProductName">Product name</label>
-            <input asp-for="ProductName" type="text" value="@Model.ProductName" />
-        </div>
-        <div class="form-group">
-            <label asp-for="QuantityPerUnit">Quantity per unit</label>
-            <input asp-for="QuantityPerUnit" type="text" value="@Model.QuantityPerUnit" />
-        </div>
-        <div class="form-group">
-            <label asp-for="UnitPrice">Unit price</label>
-            <input asp-for="UnitPrice" type="text" value="@Model.UnitPrice" />
-        </div>
-        <div class="form-group">
-            <label asp-for="UnitsInStock">Units in stock</label>
-            <input asp-for="UnitsInStock" type="text" value="@Model.UnitsInStock" />
-        </div>
-        <div class="form-group">
-            <label asp-for="UnitsOnOrder">Units on order</label>
-            <input asp-for="UnitsOnOrder" type="text" value="@Model.UnitsOnOrder" />
-        </div>
-        <div class="form-group">
-            <label asp-for="Discontinued">Discontinued</label>
-            <input asp-for="Discontinued" type="checkbox" value="@Model.Discontinued" />
-        </div>
-        <div class="form-group">
-            <label asp-for="SupplierID">Supplier</label>
-            <select asp-for="SupplierID" asp-items="@Model.SuppliersList"></select>
-        </div>
-        <div class="form-group">
-            <label asp-for="CategoryID">Category</label>
-            <select asp-for="CategoryID" asp-items="@Model.CategoriesList"></select>
-        </div>
-
-        <div class="form-group">
-            <button type="submit">Submit</button>
-        </div>
-    }
-</fieldset>
+<partial name="_PostForm" model="@Model"/>
