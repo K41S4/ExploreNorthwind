@@ -1,7 +1,5 @@
-﻿using ExploreNorthwind.ConfigurationOptions;
-using ExploreNorthwind.Models.NorthwindDB;
+﻿using ExploreNorthwind.Models.NorthwindDB;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;

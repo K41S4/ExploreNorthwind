@@ -16,8 +16,13 @@ namespace ExploreNorthwind.Controllers
 
         public IActionResult Index()
         {
-            List<Category> categories = categoriesRepo.GetAll();
-            return View(categories);
+            var dataCategories = categoriesRepo.GetAll();
+            var dtoCategories = new List<CategoryDTO>();
+            foreach (var item in dataCategories)
+            {
+                dtoCategories.Add(new CategoryDTO(item));
+            }
+            return View(dtoCategories);
         }
     }
 }

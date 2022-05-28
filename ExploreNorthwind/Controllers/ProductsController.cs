@@ -1,11 +1,10 @@
 ﻿using ExploreNorthwind.ConfigurationOptions;
 using ExploreNorthwind.Models;
 using ExploreNorthwind.Models.Repositories;
-using ExploreNorthwind.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ExploreNorthwind.Controllers
@@ -15,37 +14,43 @@ namespace ExploreNorthwind.Controllers
         private ProductsRepository productsRepo { get; }
         private CategoriesRepository categoriesRepo { get; }
         private SuppliersRepository suppliersRepo { get; }
-        private ExploreNorthwindOptions Options { get; set; }
+        private ExploreNorthwindOptions options { get; set; }
         public ProductsController(ProductsRepository productsRepo, SuppliersRepository suppliersRepo, CategoriesRepository categoriesRepo, IOptionsSnapshot<ExploreNorthwindOptions> options)
         {
             this.productsRepo = productsRepo;
             this.suppliersRepo = suppliersRepo;
             this.categoriesRepo = categoriesRepo;
-            this.Options = options.Value;
+            this.options = options.Value;
         }
 
         public IActionResult Index()
         {
-            var products = productsRepo.Get(Options.ProductsMaxCount);
-            return View(products);
+            var dataProducts = productsRepo.Get(options.ProductsMaxCount);
+            var dtoProducts = new List<ProductDTO>();
+            foreach (var item in dataProducts)
+            {
+                dtoProducts.Add(new ProductDTO(item));
+            }
+            return View(dtoProducts);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            var productView = new ProductViewModel(suppliersRepo.GetAll(), categoriesRepo.GetAll());
+            var productView = new ProductDTO(GetAllSuppliers(), GetAllCategories());
+
             return View(productView);
         }
 
         [HttpPost]
-        public IActionResult Create(ProductViewModel product)
+        public IActionResult Create(ProductDTO product)
         {
-            product.InitializeSelectLists(suppliersRepo.GetAll(), categoriesRepo.GetAll());
+            product.InitializeSelectLists(GetAllSuppliers(), GetAllCategories());
             if (!ModelState.IsValid)
             {
                 return View(product);
             }
-            var dataProduct = product.GetProduct(); 
+            var dataProduct = product.GetProduct();
             productsRepo.Create(dataProduct);
             return RedirectToAction(nameof(Index));
         }
@@ -55,14 +60,14 @@ namespace ExploreNorthwind.Controllers
         {
             var product = productsRepo.GetById(productId);
             if (product == null) RedirectToAction(nameof(Index));
-            var productView = new ProductViewModel(product, suppliersRepo.GetAll(), categoriesRepo.GetAll());
+            var productView = new ProductDTO(product, GetAllSuppliers(), GetAllCategories());
             return View(productView);
         }
         
         [HttpPost]
-        public IActionResult Update(ProductViewModel product)
+        public IActionResult Update(ProductDTO product)
         {
-            product.InitializeSelectLists(suppliersRepo.GetAll(), categoriesRepo.GetAll());
+            product.InitializeSelectLists(GetAllSuppliers(), GetAllCategories());
             if (!ModelState.IsValid)
             {
                 return View(product);
@@ -70,6 +75,28 @@ namespace ExploreNorthwind.Controllers
             var dataProduct = product.GetProduct();
             productsRepo.Update(dataProduct);
             return RedirectToAction(nameof(Index));
+        }
+
+        private List<CategoryDTO> GetAllCategories()
+        {
+            var dataCategories = categoriesRepo.GetAll();
+            var dtoCategories = new List<CategoryDTO>();
+            foreach (var item in dataCategories)
+            {
+                dtoCategories.Add(new CategoryDTO(item));
+            }
+            return dtoCategories;
+        }
+
+        private List<SupplierDTO> GetAllSuppliers()
+        {
+            var dataSuppliers = suppliersRepo.GetAll();
+            var dtoSuppliers = new List<SupplierDTO>();
+            foreach (var item in dataSuppliers)
+            {
+                dtoSuppliers.Add(new SupplierDTO(item));
+            }
+            return dtoSuppliers;
         }
     }
 }

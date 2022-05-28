@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model IEnumerable<ProductDTO>
 @{
     ViewData["Title"] = "Products Page";
 }
@@ -31,13 +31,13 @@
             <th scope="row">@item.ProductID</th>
             <td>@item.ProductName</td>
             <td>@item.QuantityPerUnit</td>
-            <td>@item.UnitPrice</td>
+            <td>@item.UnitPrice.ToString("F")</td>
             <td>@item.UnitsInStock</td>
             <td>@item.UnitsOnOrder</td>
             <td>@item.ReorderLevel</td>
             <td>@item.Discontinued</td>
-            <td>@item.Category.CategoryName</td>
-            <td>@item.Supplier.CompanyName</td>
+            <td>@item.CategoryName</td>
+            <td>@item.CompanyName</td>
             <td><a asp-controller="Products" asp-action="Update" asp-route-productId="@item.ProductID"><span>Edit</span><i class="fas fa-edit"></i></a></td>
         </tr>
         }

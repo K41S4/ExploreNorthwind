@@ -1,4 +1,4 @@
-﻿@model ExploreNorthwind.ViewModels.ProductViewModel
+﻿@model ExploreNorthwind.Models.ProductDTO
 
 <fieldset>
     @using (Html.BeginForm())
@@ -14,7 +14,7 @@
         </div>
         <div class="form-group">
             <label asp-for="UnitPrice">Unit price</label>
-            <input class="form-control" asp-for="UnitPrice" type="text" value="@Model.UnitPrice" />
+            <input class="form-control" asp-for="UnitPrice" type="text" value="@Model.UnitPrice.ToString("F")" />
             <div><span asp-validation-for="UnitPrice" class="text-danger"></span></div>
         </div>
         <div class="form-group">

@@ -3,15 +3,11 @@ using ExploreNorthwind.Models.NorthwindDB;
 using ExploreNorthwind.Models.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ExploreNorthwind
 {
@@ -29,7 +25,10 @@ namespace ExploreNorthwind
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<NorthwindContext>();
+            var exploreNorthwindOptions = new ExploreNorthwindOptions();
+            Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName).Bind(exploreNorthwindOptions);
+            
+            services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(exploreNorthwindOptions.NorthwindConnectionString));
             services.AddTransient<CategoriesRepository>();
             services.AddTransient<ProductsRepository>();
             services.AddTransient<SuppliersRepository>();
