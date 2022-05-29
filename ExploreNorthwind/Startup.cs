@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ExploreNorthwind
@@ -36,8 +37,12 @@ namespace ExploreNorthwind
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            logger.LogInformation("Application Startup");
+            logger.LogInformation($"App location: {env.ContentRootPath}");
+            logger.LogInformation($"Configuration values:\nProductsMaxCount: {Configuration["ExploreNorthwindOptions:ProductsMaxCount"]}\nNorthwindConnectionString: {Configuration["ExploreNorthwindOptions:NorthwindConnectionString"]}");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -1,4 +1,5 @@
 ﻿using ExploreNorthwind.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,7 +27,10 @@ namespace ExploreNorthwind.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var error = this.HttpContext.Features.Get<IExceptionHandlerFeature>().Error;
+            var time = DateTime.Now.ToLongTimeString();
+            _logger.LogError($"Message: {error.Message}; Source: {error.Source}");            
+            return View(new ErrorViewModel { Message = error.Message, Time = time });
         }
     }
 }

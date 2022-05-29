@@ -17,7 +17,12 @@ namespace ExploreNorthwind
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+            Host.CreateDefaultBuilder(args).
+                ConfigureLogging(builder => {
+                    builder.SetMinimumLevel(LogLevel.Information);
+                    builder.AddLog4Net("log4net.config");
+                    builder.AddFilter("Microsoft.Hosting.Lifetime", LogLevel.None);
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
