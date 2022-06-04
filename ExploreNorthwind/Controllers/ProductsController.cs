@@ -1,6 +1,6 @@
 ﻿using ExploreNorthwind.ConfigurationOptions;
 using ExploreNorthwind.Models;
-using ExploreNorthwind.Models.Repositories;
+using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -11,11 +11,11 @@ namespace ExploreNorthwind.Controllers
 {
     public class ProductsController : Controller
     {
-        private ProductsRepository productsRepo { get; }
-        private CategoriesRepository categoriesRepo { get; }
-        private SuppliersRepository suppliersRepo { get; }
+        private IProductsRepository productsRepo { get; }
+        private ICategoriesRepository categoriesRepo { get; }
+        private ISuppliersRepository suppliersRepo { get; }
         private ExploreNorthwindOptions options { get; set; }
-        public ProductsController(ProductsRepository productsRepo, SuppliersRepository suppliersRepo, CategoriesRepository categoriesRepo, IOptionsSnapshot<ExploreNorthwindOptions> options)
+        public ProductsController(IProductsRepository productsRepo, ISuppliersRepository suppliersRepo, ICategoriesRepository categoriesRepo, IOptionsSnapshot<ExploreNorthwindOptions> options)
         {
             this.productsRepo = productsRepo;
             this.suppliersRepo = suppliersRepo;

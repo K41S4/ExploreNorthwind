@@ -1,14 +1,16 @@
-﻿using ExploreNorthwind.Models.NorthwindDB;
+﻿using ExploreNorthwindDataAccess.Models;
+using ExploreNorthwindDataAccess.NorthwindDB;
+using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExploreNorthwind.Models.Repositories
+namespace ExploreNorthwindDataAccess.Repositories
 {
-    public class CategoriesRepository
+    public class CategoriesRepository: ICategoriesRepository
     {
-        private NorthwindContext Context { get; }
-        public CategoriesRepository(NorthwindContext northwindContext)
+        private INorthwindContext Context { get; }
+        public CategoriesRepository(INorthwindContext northwindContext)
         {
             this.Context = northwindContext;
         }

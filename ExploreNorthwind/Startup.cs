@@ -1,6 +1,7 @@
 using ExploreNorthwind.ConfigurationOptions;
-using ExploreNorthwind.Models.NorthwindDB;
-using ExploreNorthwind.Models.Repositories;
+using ExploreNorthwindDataAccess.NorthwindDB;
+using ExploreNorthwindDataAccess.Repositories;
+using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,10 +30,10 @@ namespace ExploreNorthwind
             var exploreNorthwindOptions = new ExploreNorthwindOptions();
             Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName).Bind(exploreNorthwindOptions);
             
-            services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(exploreNorthwindOptions.NorthwindConnectionString));
-            services.AddTransient<CategoriesRepository>();
-            services.AddTransient<ProductsRepository>();
-            services.AddTransient<SuppliersRepository>();
+            services.AddDbContext<INorthwindContext, NorthwindContext>(options => options.UseSqlServer(exploreNorthwindOptions.NorthwindConnectionString));
+            services.AddTransient<ICategoriesRepository, CategoriesRepository>();
+            services.AddTransient<IProductsRepository, ProductsRepository>();
+            services.AddTransient<ISuppliersRepository, SuppliersRepository>();
             services.Configure<ExploreNorthwindOptions>(Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName));
         }
 
@@ -41,7 +42,7 @@ namespace ExploreNorthwind
         {
             logger.LogInformation("Application Startup");
             logger.LogInformation($"App location: {env.ContentRootPath}");
-            logger.LogInformation($"Configuration values:\nProductsMaxCount: {Configuration["ExploreNorthwindOptions:ProductsMaxCount"]}\nNorthwindConnectionString: {Configuration["ExploreNorthwindOptions:NorthwindConnectionString"]}");
+            logger.LogInformation($"Configuration values:\nProductsMaxCount: {Configuration["ExploreNorthwindOptions:ProductsMaxCount"]}");
 
             if (env.IsDevelopment())
             {

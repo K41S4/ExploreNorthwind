@@ -1,14 +1,16 @@
-﻿using ExploreNorthwind.Models.NorthwindDB;
+﻿using ExploreNorthwindDataAccess.Models;
+using ExploreNorthwindDataAccess.NorthwindDB;
+using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExploreNorthwind.Models.Repositories
+namespace ExploreNorthwindDataAccess.Repositories
 {
-    public class SuppliersRepository
+    public class SuppliersRepository: ISuppliersRepository
     {
-        private NorthwindContext Context { get; }
-        public SuppliersRepository(NorthwindContext northwindContext)
+        private INorthwindContext Context { get; }
+        public SuppliersRepository(INorthwindContext northwindContext)
         {
             this.Context = northwindContext;
         }

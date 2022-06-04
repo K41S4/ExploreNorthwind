@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExploreNorthwindDataAccess.Models;
+using System;
 
 namespace ExploreNorthwind.Models
 {

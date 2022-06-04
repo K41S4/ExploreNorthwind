@@ -1,5 +1,5 @@
 ﻿using ExploreNorthwind.Models;
-using ExploreNorthwind.Models.Repositories;
+using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,8 @@ namespace ExploreNorthwind.Controllers
 {
     public class CategoriesController : Controller
     {
-        private CategoriesRepository categoriesRepo { get; }
-        public CategoriesController(CategoriesRepository categoriesRepo)
+        private ICategoriesRepository categoriesRepo { get; }
+        public CategoriesController(ICategoriesRepository categoriesRepo)
         {
             this.categoriesRepo = categoriesRepo;
         }

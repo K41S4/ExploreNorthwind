@@ -1,22 +1,24 @@
-﻿using ExploreNorthwind.Models.NorthwindDB;
+﻿using ExploreNorthwindDataAccess.Models;
+using ExploreNorthwindDataAccess.NorthwindDB;
+using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExploreNorthwind.Models.Repositories
+namespace ExploreNorthwindDataAccess.Repositories
 {
-    public class ProductsRepository
+    public class ProductsRepository : IProductsRepository
     {
-        private NorthwindContext Context { get; }
-        public ProductsRepository(NorthwindContext northwindContext)
+        private INorthwindContext Context { get; }
+        public ProductsRepository(INorthwindContext northwindContext)
         {
             this.Context = northwindContext;
         }
 
         public IEnumerable<Product> Get(int maxCount)
         {
-            var resultList = Context.Products.Include(w => w.Category).Include(w => w.Supplier).ToList();
+            var resultList = this.Get();
             if (maxCount > 0)
             {
                 return resultList.Take(maxCount);
@@ -24,6 +26,12 @@ namespace ExploreNorthwind.Models.Repositories
             return resultList;
         }
         
+        public IEnumerable<Product> Get()
+        {
+            var resultList = Context.Products.Include(w => w.Category).Include(w => w.Supplier).ToList();
+            return resultList;
+        }
+
         public Product GetById(int id)
         {
             return Context.Products.Where(w => w.ProductID == id).Include(w => w.Category).Include(w => w.Supplier).First();
@@ -31,10 +39,10 @@ namespace ExploreNorthwind.Models.Repositories
 
         public void Create(Product product)
         {
-            Context.Add(product);
+            Context.Products.Add(product);
             Context.SaveChanges();
         }
-        
+
         public void Update(Product product)
         {
             var oldItem = GetById(product.ProductID);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ExploreNorthwind.Models
+namespace ExploreNorthwindDataAccess.Models
 {
     public class Supplier
     {

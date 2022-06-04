@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ExploreNorthwindDataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace ExploreNorthwind.Models.NorthwindDB
+namespace ExploreNorthwindDataAccess.NorthwindDB
 {
-    public class NorthwindContext: DbContext
+    public class NorthwindContext: DbContext, INorthwindContext
     {
         public NorthwindContext(DbContextOptions<NorthwindContext> options) : base(options)
         { }
