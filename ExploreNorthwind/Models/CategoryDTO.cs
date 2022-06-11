@@ -1,4 +1,5 @@
 ﻿using ExploreNorthwindDataAccess.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 
 namespace ExploreNorthwind.Models
@@ -8,6 +9,7 @@ namespace ExploreNorthwind.Models
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
         public string Description { get; set; }
+        public IFormFile Picture { get; set; }
 
         public CategoryDTO()
         { }

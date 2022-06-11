@@ -10,7 +10,12 @@
     <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
             <div class="font-weight-bold">@item.CategoryName</div>
-            @item.Description
+            <div>@item.Description</div>
+                <div>
+                    <a target="_blank" href="@Url.Action("Picture", "Categories", new { categoryId = item.CategoryID }, null)">See picture</a>
+                    or
+                    <a asp-controller="Categories" asp-action="EditPicture" asp-route-categoryId="@item.CategoryID"><span>Upload a new one</span></a>
+                </div>
         </div>
         <span class="badge badge-dark rounded-pill">@item.CategoryID</span>
     </li>
