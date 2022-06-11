@@ -64,6 +64,10 @@ namespace ExploreNorthwind
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "image",
+                    pattern: "images/{categoryId}",
+                    defaults: new { controller = "Categories", action = "Picture" });
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
