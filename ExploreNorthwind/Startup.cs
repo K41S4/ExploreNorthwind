@@ -1,4 +1,5 @@
 using ExploreNorthwind.ConfigurationOptions;
+using ExploreNorthwind.Middlewares;
 using ExploreNorthwindDataAccess.NorthwindDB;
 using ExploreNorthwindDataAccess.Repositories;
 using ExploreNorthwindDataAccess.Repositories.Interfaces;
@@ -60,6 +61,8 @@ namespace ExploreNorthwind
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseImageCaching(new ImageCachingParameters { ExpirationTime = 100, CacheStoragePath = "", MaxCacheCount = 4 });
 
             app.UseEndpoints(endpoints =>
             {

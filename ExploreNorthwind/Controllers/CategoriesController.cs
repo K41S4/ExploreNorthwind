@@ -1,10 +1,12 @@
-﻿using ExploreNorthwind.Models;
+﻿using ExploreNorthwind.Constants;
+using ExploreNorthwind.Models;
 using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace ExploreNorthwind.Controllers
 {
@@ -28,12 +30,11 @@ namespace ExploreNorthwind.Controllers
         }
         
         [HttpGet]
-        public IActionResult Picture(int categoryId)
+        public FileContentResult Picture(int categoryId)
         {
             var categoryPicture = categoriesRepo.GetPictureByCategoryId(categoryId);
-            if (categoryPicture == null) return Content("No picture here!");
-            var stream = new MemoryStream(categoryPicture);
-            return File(stream, "image/bmp"); ;
+            if (categoryPicture == null) return File(Encoding.ASCII.GetBytes("No picture here!"), "text/plain");
+            return File(categoryPicture, ExploreNotrhwindConstants.ImageContentType);
         }
 
         [HttpGet]
