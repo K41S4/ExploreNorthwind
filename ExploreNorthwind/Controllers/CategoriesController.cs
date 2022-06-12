@@ -1,4 +1,5 @@
 ﻿using ExploreNorthwind.Constants;
+using ExploreNorthwind.Filters;
 using ExploreNorthwind.Models;
 using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +19,7 @@ namespace ExploreNorthwind.Controllers
             this.categoriesRepo = categoriesRepo;
         }
 
+        [TypeFilter(typeof(LoggingFilter))]
         public IActionResult Index()
         {
             var dataCategories = categoriesRepo.GetAll();
@@ -30,6 +32,7 @@ namespace ExploreNorthwind.Controllers
         }
         
         [HttpGet]
+        [TypeFilter(typeof(LoggingFilter))]
         public FileContentResult Picture(int categoryId)
         {
             var categoryPicture = categoriesRepo.GetPictureByCategoryId(categoryId);
@@ -38,6 +41,7 @@ namespace ExploreNorthwind.Controllers
         }
 
         [HttpGet]
+        [TypeFilter(typeof(LoggingFilter), Arguments = new object[] { true })]
         public IActionResult EditPicture(int categoryId)
         {
             var category = categoriesRepo.GetById(categoryId);

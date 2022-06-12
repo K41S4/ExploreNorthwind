@@ -1,4 +1,5 @@
 ﻿using ExploreNorthwind.ConfigurationOptions;
+using ExploreNorthwind.Filters;
 using ExploreNorthwind.Models;
 using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace ExploreNorthwind.Controllers
 {
+    [TypeFilter(typeof(LoggingFilter))]
     public class ProductsController : Controller
     {
         private IProductsRepository productsRepo { get; }
