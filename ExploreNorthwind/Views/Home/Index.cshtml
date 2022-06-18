@@ -1,7 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_HomeLayout";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    <div>
+        <a class="text-dark" asp-controller="Products" asp-action="Index">Products</a>
+    </div>
+    <div>
+        <a class="text-dark" asp-controller="Categories" asp-action="Index">Categories</a>
+    </div>
 </div>

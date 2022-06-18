@@ -3,6 +3,14 @@
     ViewData["Title"] = "Categories Page";
 }
 
+@section Footer {
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            You can't edit categories.
+        </div>
+    </footer>
+}
+
 <h3 class="p-3">Categories list</h3>
 <ul class="list-group list-group-ligh">
 @foreach (var item in Model)
