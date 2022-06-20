@@ -20,7 +20,8 @@
             <div class="font-weight-bold">@item.CategoryName</div>
             <div>@item.Description</div>
                 <div>
-                    <a target="_blank" href="@Url.Action("Picture", "Categories", new { categoryId = item.CategoryID }, null)">See picture</a>
+                    <northwind-image-link image-id="@item.CategoryID">See picture</northwind-image-link>
+                   @* @Html.NorthwindImageLink(item.CategoryID.ToString(), "See picture")*@
                     or
                     <a asp-controller="Categories" asp-action="EditPicture" asp-route-categoryId="@item.CategoryID"><span>Upload a new one</span></a>
                 </div>

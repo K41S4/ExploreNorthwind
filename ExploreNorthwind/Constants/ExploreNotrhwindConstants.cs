@@ -10,5 +10,6 @@ namespace ExploreNorthwind.Constants
         public const string GetPicturePath = "/Categories/Picture";
         public const string PostPicturePath = "/Categories/EditPicture";
         public const string ImageContentType = "image/bmp";
+        public const string ImagePath = "images/{0}";
     }
 }
