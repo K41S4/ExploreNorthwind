@@ -1,0 +1,16 @@
+﻿@model BreadcrumbsViewModel
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Home</a>
+    <span> > </span>
+    @if (!String.IsNullOrEmpty(Model.SubsectionAction))
+    {
+        <a asp-controller=@Model.SectionAction asp-action="Index">@Model.SectionName</a>
+        <span> > </span>
+        <span>@Model.SubsectionName</span>
+    }
+    else
+    {
+        <span>@Model.SectionName</span>
+    }
+</div>

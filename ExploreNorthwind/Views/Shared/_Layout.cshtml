@@ -42,6 +42,15 @@
     }
     <div class="container">
         <main role="main" class="pb-3">
+            @if (IsSectionDefined("Breadcrumbs"))
+            {
+                @RenderSection("Breadcrumbs", required: false);
+            }
+            else
+            {
+                @(await Component.InvokeAsync("Breadcrumbs"))
+            }
+
             @RenderBody()
         </main>
     </div>
