@@ -1,5 +1,6 @@
 using ExploreNorthwind.ConfigurationOptions;
 using ExploreNorthwind.Middlewares;
+using ExploreNorthwind.Middlewares.Helpers;
 using ExploreNorthwindDataAccess.NorthwindDB;
 using ExploreNorthwindDataAccess.Repositories;
 using ExploreNorthwindDataAccess.Repositories.Interfaces;
@@ -35,6 +36,7 @@ namespace ExploreNorthwind
             services.AddTransient<ICategoriesRepository, CategoriesRepository>();
             services.AddTransient<IProductsRepository, ProductsRepository>();
             services.AddTransient<ISuppliersRepository, SuppliersRepository>();
+            services.AddTransient<IDataOperationsHelper, DataOperationsHelper>();
             services.Configure<ExploreNorthwindOptions>(Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName));
         }
 
@@ -62,7 +64,7 @@ namespace ExploreNorthwind
 
             app.UseAuthorization();
 
-            app.UseImageCaching(new ImageCachingParameters { ExpirationTime = 100, CacheStoragePath = "", MaxCacheCount = 4 });
+            app.UseImageCaching();
 
             app.UseEndpoints(endpoints =>
             {

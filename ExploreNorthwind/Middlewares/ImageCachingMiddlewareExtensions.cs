@@ -6,9 +6,9 @@ namespace ExploreNorthwind.Middlewares
     public static class ImageCachingMiddlewareExtensions
     {
         public static IApplicationBuilder UseImageCaching(
-            this IApplicationBuilder builder, ImageCachingParameters parameters)
+            this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<ImageCachingMiddleware>(parameters);
+            return builder.UseMiddleware<ImageCachingMiddleware>();
         }
     }
 }

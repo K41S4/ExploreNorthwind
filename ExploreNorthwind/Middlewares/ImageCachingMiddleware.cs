@@ -1,5 +1,9 @@
-﻿using ExploreNorthwind.Constants;
+﻿using ExploreNorthwind.ConfigurationOptions;
+using ExploreNorthwind.Constants;
+using ExploreNorthwind.Middlewares.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,36 +13,31 @@ namespace ExploreNorthwind.Middlewares
 {
     public class ImageCachingMiddleware
     {
+        private IMemoryCache _memoryCache;
         private readonly RequestDelegate _next;
-        private Queue<string> _cache;
-        private string _cacheStoragePath;
-        private int _maxCacheCount;
-        private int _expirationTimeSeconds;
-        private DateTime _startTime;
+        private IDataOperationsHelper _dataOperationsHelper;
 
-        public ImageCachingMiddleware(RequestDelegate next, ImageCachingParameters parameters)
+        public ImageCachingMiddleware(RequestDelegate next, IMemoryCache cache, IDataOperationsHelper dataOperationsHelper)
         {
-            _startTime = DateTime.Now;
-            _cache = new Queue<string>();
             _next = next;
-
-            _maxCacheCount = parameters.MaxCacheCount;
-            _cacheStoragePath = parameters.CacheStoragePath;
-            _expirationTimeSeconds = parameters.ExpirationTime;
+            _memoryCache = cache;
+            _dataOperationsHelper = dataOperationsHelper;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, IOptionsSnapshot<ExploreNorthwindOptions> options)
         {
-            // Clear cache if time X passed since last request
-            var difference = DateTime.Now.Subtract(_startTime);
-            if (difference.TotalSeconds > _expirationTimeSeconds) _cache.Clear();
-            _startTime = DateTime.Now;
+            var optionsValue = options.Value;
+            _dataOperationsHelper.MaxCacheCount = optionsValue.MaxCacheCount;
+            _dataOperationsHelper.CacheStoragePath = optionsValue.CacheStoragePath;
+            _dataOperationsHelper.ExpirationTimeSeconds = optionsValue.ExpirationTime;
 
             // Return if cached
-            var cacheKey = this.GetCacheKey(context.Request.Path, context.Request.Query["categoryId"]);
-            if (_cache.Contains(cacheKey))
+            var cacheKey = _dataOperationsHelper.GetCacheKey(context.Request.Path, context.Request.Query["categoryId"]);
+            var a = _memoryCache.Get(cacheKey);
+            bool outResult;
+            if (_memoryCache.TryGetValue(cacheKey, out outResult))
             {
-                var isSucceeded = await this.WriteCachedFileToResponse(context, cacheKey);
+                var isSucceeded = await _dataOperationsHelper.WriteCachedFileToResponse(context, cacheKey);
                 if (isSucceeded) return;
             }
 
@@ -55,7 +54,8 @@ namespace ExploreNorthwind.Middlewares
             // Cache response
             if (context.Response.ContentType == ExploreNotrhwindConstants.ImageContentType)
             {
-                this.WriteToFile(cacheKey, buffer.ToArray());
+                _dataOperationsHelper.WriteToFile(cacheKey, buffer.ToArray());
+                _dataOperationsHelper.AddToCache(cacheKey, _memoryCache);
             }
 
             // Update or cache POST request image
@@ -63,74 +63,8 @@ namespace ExploreNorthwind.Middlewares
                 && context.Request.Path.Equals(ExploreNotrhwindConstants.PostPicturePath) 
                 && context.Response.StatusCode == 302)
             {
-                await this.WritePostDataToCachedFile(context);
+                await _dataOperationsHelper.WritePostDataToCachedFile(context, _memoryCache);
             }
-        }
-
-        private async Task<bool> WriteCachedFileToResponse(HttpContext context, string cacheKey)
-        {
-            var fileInfo = new FileInfo(_cacheStoragePath + cacheKey);
-            var fileBytes = new byte[fileInfo.Length];
-            using (FileStream fs = fileInfo.OpenRead())
-            {
-                fs.Read(fileBytes, 0, fileBytes.Length);
-            }
-
-            if (fileBytes == null) return false;
-
-            context.Response.ContentType = ExploreNotrhwindConstants.ImageContentType;
-            await context.Response.Body.WriteAsync(fileBytes);
-
-            return true;
-        }
-
-        private async Task WritePostDataToCachedFile(HttpContext context)
-        {
-            var form = await context.Request.ReadFormAsync();
-            var file = form.Files[0];
-
-            var bytes = new byte[file.Length];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                await file.CopyToAsync(ms);
-                bytes = ms.ToArray();
-            }
-
-            var cacheKey = this.GetCacheKey(form["CategoryID"]);
-            this.WriteToFile(cacheKey, bytes);
-        }
-
-        private void WriteToFile(string cacheKey, byte[] bytes)
-        {
-            if (bytes != null)
-            {
-                File.WriteAllBytes(_cacheStoragePath + cacheKey, bytes);
-                this.AddToCache(cacheKey);
-            }
-        }
-
-        private void AddToCache(string cacheKey)
-        {
-            if (_cache.Count >= _maxCacheCount)
-            {
-                var dequeued = _cache.Dequeue();
-
-                var fileInfo = new FileInfo(_cacheStoragePath + dequeued);
-                fileInfo.Delete();
-            }
-            if (!_cache.Contains(cacheKey)) _cache.Enqueue(cacheKey);
-        }
-
-        private string GetCacheKey(string requestQuery, string idParameter)
-        {
-            if (requestQuery.Equals(ExploreNotrhwindConstants.GetPicturePath) && idParameter != null) return this.GetCacheKey(idParameter);
-
-            return requestQuery.Replace("/", String.Empty);
-        }
-
-        private string GetCacheKey(string idParameter)
-        {
-            return "images" + idParameter;
         }
     }
 }
