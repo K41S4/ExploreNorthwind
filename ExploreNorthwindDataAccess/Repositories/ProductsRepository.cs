@@ -61,5 +61,14 @@ namespace ExploreNorthwindDataAccess.Repositories
 
             Context.SaveChanges();
         }
+
+        public void Delete(int id)
+        {
+            var item = GetById(id);
+            if (item == null) return;
+
+            Context.Products.Remove(item);
+            Context.SaveChanges();
+        }
     }
 }

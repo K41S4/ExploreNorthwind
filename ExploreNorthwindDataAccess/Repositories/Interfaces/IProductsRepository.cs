@@ -10,5 +10,6 @@ namespace ExploreNorthwindDataAccess.Repositories.Interfaces
         IEnumerable<Product> Get();
         Product GetById(int id);
         void Update(Product product);
+        void Delete(int id);
     }
 }

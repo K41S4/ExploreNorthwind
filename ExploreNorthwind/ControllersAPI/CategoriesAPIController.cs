@@ -16,7 +16,8 @@ namespace ExploreNorthwind.ControllersAPI
             this.categoriesRepo = categoriesRepo;
         }
 
-        public List<CategoryDTO> Get()
+        [HttpGet]
+        public List<CategoryDTO> Category()
         {
             var dataCategories = categoriesRepo.GetAll();
             var dtoCategories = new List<CategoryDTO>();
@@ -25,6 +26,20 @@ namespace ExploreNorthwind.ControllersAPI
                 dtoCategories.Add(new CategoryDTO(item));
             }
             return dtoCategories;
+        }
+
+        [HttpGet]
+        public byte[] Picture(int id)
+        {
+            var picture = categoriesRepo.GetPictureByCategoryId(id);
+            return picture;
+        }
+
+        [HttpPut]
+        public IActionResult Picture(int id, byte[] picture)
+        {
+            categoriesRepo.AddPicture(id, picture);
+            return Ok();
         }
     }
 }
