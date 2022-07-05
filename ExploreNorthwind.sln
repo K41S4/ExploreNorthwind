@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExploreNorthwindDataAccess"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExploreNorthwind.UnitTests", "ExploreNorthwind.UnitTests\ExploreNorthwind.UnitTests.csproj", "{AF70B871-A77A-4330-8618-95C68538F875}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{2F841655-E5EE-44AB-9430-D62BF0B2AE78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{2F841655-E5EE-44AB-9430-D62BF0B2AE78}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConcertAPI", "GeneratedClientProxy\ConcertAPI.csproj", "{38EC44DF-C452-40C0-B792-56D40DDA6607}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientProxy", "ClientProxy\ClientProxy.csproj", "{0AEBBD1F-2C4B-4EAB-8D08-D0BDF9F4C4B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{2F841655-E5EE-44AB-9430-D62BF0B2AE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F841655-E5EE-44AB-9430-D62BF0B2AE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F841655-E5EE-44AB-9430-D62BF0B2AE78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38EC44DF-C452-40C0-B792-56D40DDA6607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38EC44DF-C452-40C0-B792-56D40DDA6607}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38EC44DF-C452-40C0-B792-56D40DDA6607}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38EC44DF-C452-40C0-B792-56D40DDA6607}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AEBBD1F-2C4B-4EAB-8D08-D0BDF9F4C4B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AEBBD1F-2C4B-4EAB-8D08-D0BDF9F4C4B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AEBBD1F-2C4B-4EAB-8D08-D0BDF9F4C4B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AEBBD1F-2C4B-4EAB-8D08-D0BDF9F4C4B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

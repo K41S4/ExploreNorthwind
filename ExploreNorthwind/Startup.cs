@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 
 namespace ExploreNorthwind
@@ -28,6 +29,8 @@ namespace ExploreNorthwind
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Concert API", Version = "v1" }));
 
             var exploreNorthwindOptions = new ExploreNorthwindOptions();
             Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName).Bind(exploreNorthwindOptions);
@@ -57,6 +60,10 @@ namespace ExploreNorthwind
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExploreNorthwind API v1"));
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
