@@ -8,10 +8,10 @@
 using System;
 using Azure.Core;
 
-namespace ConcertAPI
+namespace ExploreNorthwindAPI
 {
-    /// <summary> Client options for ConcertAPI library clients. </summary>
-    public partial class ConcertAPIClientOptions : ClientOptions
+    /// <summary> Client options for ExploreNorthwindAPI library clients. </summary>
+    public partial class ExploreNorthwindAPIClientOptions : ClientOptions
     {
         private const ServiceVersion LatestVersion = ServiceVersion.Vv1;
 
@@ -24,8 +24,8 @@ namespace ConcertAPI
 
         internal string Version { get; }
 
-        /// <summary> Initializes new instance of ConcertAPIClientOptions. </summary>
-        public ConcertAPIClientOptions(ServiceVersion version = LatestVersion)
+        /// <summary> Initializes new instance of ExploreNorthwindAPIClientOptions. </summary>
+        public ExploreNorthwindAPIClientOptions(ServiceVersion version = LatestVersion)
         {
             Version = version switch
             {

@@ -30,7 +30,7 @@ namespace ExploreNorthwind
         {
             services.AddControllersWithViews();
 
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Concert API", Version = "v1" }));
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExploreNorthwindAPI", Version = "v1" }));
 
             var exploreNorthwindOptions = new ExploreNorthwindOptions();
             Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName).Bind(exploreNorthwindOptions);
@@ -62,7 +62,7 @@ namespace ExploreNorthwind
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExploreNorthwind API v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExploreNorthwindAPI v1"));
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

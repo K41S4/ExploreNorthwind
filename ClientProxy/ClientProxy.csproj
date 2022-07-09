@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GeneratedClientProxy\ConcertAPI.csproj" />
+    <ProjectReference Include="..\GeneratedProxyAPI\ExploreNorthwindAPIGenerated.csproj" />
   </ItemGroup>
 
 </Project>

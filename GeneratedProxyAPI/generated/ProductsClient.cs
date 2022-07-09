@@ -11,10 +11,10 @@ using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 
-namespace ConcertAPI
+namespace ExploreNorthwindAPI
 {
-    /// <summary> The ProductsAPI service client. </summary>
-    public partial class ProductsAPIClient
+    /// <summary> The Products service client. </summary>
+    public partial class ProductsClient
     {
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
@@ -25,19 +25,19 @@ namespace ConcertAPI
         /// <summary> The HTTP pipeline for sending and receiving REST requests and responses. </summary>
         public virtual HttpPipeline Pipeline => _pipeline;
 
-        /// <summary> Initializes a new instance of ProductsAPIClient. </summary>
-        public ProductsAPIClient() : this(new Uri(""), new ConcertAPIClientOptions())
+        /// <summary> Initializes a new instance of ProductsClient. </summary>
+        public ProductsClient() : this(new Uri(""), new ExploreNorthwindAPIClientOptions())
         {
         }
 
-        /// <summary> Initializes a new instance of ProductsAPIClient. </summary>
+        /// <summary> Initializes a new instance of ProductsClient. </summary>
         /// <param name="endpoint"> server parameter. </param>
         /// <param name="options"> The options for configuring the client. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="endpoint"/> is null. </exception>
-        public ProductsAPIClient(Uri endpoint, ConcertAPIClientOptions options)
+        public ProductsClient(Uri endpoint, ExploreNorthwindAPIClientOptions options)
         {
             Argument.AssertNotNull(endpoint, nameof(endpoint));
-            options ??= new ConcertAPIClientOptions();
+            options ??= new ExploreNorthwindAPIClientOptions();
 
             ClientDiagnostics = new ClientDiagnostics(options, true);
             _pipeline = HttpPipelineBuilder.Build(options, Array.Empty<HttpPipelinePolicy>(), Array.Empty<HttpPipelinePolicy>(), new ResponseClassifier());
@@ -85,7 +85,7 @@ namespace ConcertAPI
         /// </remarks>
         public virtual async Task<Response> GetAllProductsAsync(RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("ProductsAPIClient.GetAllProducts");
+            using var scope = ClientDiagnostics.CreateScope("ProductsClient.GetAllProducts");
             scope.Start();
             try
             {
@@ -140,7 +140,7 @@ namespace ConcertAPI
         /// </remarks>
         public virtual Response GetAllProducts(RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("ProductsAPIClient.GetAllProducts");
+            using var scope = ClientDiagnostics.CreateScope("ProductsClient.GetAllProducts");
             scope.Start();
             try
             {
@@ -197,7 +197,7 @@ namespace ConcertAPI
         /// </remarks>
         public virtual async Task<Response> CreateProductAsync(RequestContent content, ContentType contentType, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("ProductsAPIClient.CreateProduct");
+            using var scope = ClientDiagnostics.CreateScope("ProductsClient.CreateProduct");
             scope.Start();
             try
             {
@@ -254,7 +254,7 @@ namespace ConcertAPI
         /// </remarks>
         public virtual Response CreateProduct(RequestContent content, ContentType contentType, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("ProductsAPIClient.CreateProduct");
+            using var scope = ClientDiagnostics.CreateScope("ProductsClient.CreateProduct");
             scope.Start();
             try
             {
@@ -268,9 +268,9 @@ namespace ConcertAPI
             }
         }
 
+        /// <param name="id"> The Integer to use. </param>
         /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
         /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;text/json&quot;. </param>
-        /// <param name="id"> The Integer to use. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
@@ -310,13 +310,13 @@ namespace ConcertAPI
         /// </code>
         /// 
         /// </remarks>
-        public virtual async Task<Response> UpdateProductAsync(RequestContent content, ContentType contentType, int? id = null, RequestContext context = null)
+        public virtual async Task<Response> UpdateProductAsync(int id, RequestContent content, ContentType contentType, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("ProductsAPIClient.UpdateProduct");
+            using var scope = ClientDiagnostics.CreateScope("ProductsClient.UpdateProduct");
             scope.Start();
             try
             {
-                using HttpMessage message = CreateUpdateProductRequest(content, contentType, id, context);
+                using HttpMessage message = CreateUpdateProductRequest(id, content, contentType, context);
                 return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
             }
             catch (Exception e)
@@ -326,9 +326,9 @@ namespace ConcertAPI
             }
         }
 
+        /// <param name="id"> The Integer to use. </param>
         /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
         /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;text/json&quot;. </param>
-        /// <param name="id"> The Integer to use. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
@@ -368,13 +368,13 @@ namespace ConcertAPI
         /// </code>
         /// 
         /// </remarks>
-        public virtual Response UpdateProduct(RequestContent content, ContentType contentType, int? id = null, RequestContext context = null)
+        public virtual Response UpdateProduct(int id, RequestContent content, ContentType contentType, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("ProductsAPIClient.UpdateProduct");
+            using var scope = ClientDiagnostics.CreateScope("ProductsClient.UpdateProduct");
             scope.Start();
             try
             {
-                using HttpMessage message = CreateUpdateProductRequest(content, contentType, id, context);
+                using HttpMessage message = CreateUpdateProductRequest(id, content, contentType, context);
                 return _pipeline.ProcessMessage(message, context);
             }
             catch (Exception e)
@@ -388,9 +388,9 @@ namespace ConcertAPI
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual async Task<Response> DeleteProductAsync(int? id = null, RequestContext context = null)
+        public virtual async Task<Response> DeleteProductAsync(int id, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("ProductsAPIClient.DeleteProduct");
+            using var scope = ClientDiagnostics.CreateScope("ProductsClient.DeleteProduct");
             scope.Start();
             try
             {
@@ -408,9 +408,9 @@ namespace ConcertAPI
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Response DeleteProduct(int? id = null, RequestContext context = null)
+        public virtual Response DeleteProduct(int id, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("ProductsAPIClient.DeleteProduct");
+            using var scope = ClientDiagnostics.CreateScope("ProductsClient.DeleteProduct");
             scope.Start();
             try
             {
@@ -431,7 +431,7 @@ namespace ConcertAPI
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/api/ProductsAPI/Product", false);
+            uri.AppendPath("/api/Products", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json, text/json");
             return message;
@@ -444,43 +444,37 @@ namespace ConcertAPI
             request.Method = RequestMethod.Post;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/api/ProductsAPI/Product", false);
+            uri.AppendPath("/api/Products", false);
             request.Uri = uri;
             request.Headers.Add("Content-Type", contentType.ToString());
             request.Content = content;
             return message;
         }
 
-        internal HttpMessage CreateUpdateProductRequest(RequestContent content, ContentType contentType, int? id, RequestContext context)
+        internal HttpMessage CreateUpdateProductRequest(int id, RequestContent content, ContentType contentType, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/api/ProductsAPI/Product", false);
-            if (id != null)
-            {
-                uri.AppendQuery("id", id.Value, true);
-            }
+            uri.AppendPath("/api/Products/", false);
+            uri.AppendPath(id, true);
             request.Uri = uri;
             request.Headers.Add("Content-Type", contentType.ToString());
             request.Content = content;
             return message;
         }
 
-        internal HttpMessage CreateDeleteProductRequest(int? id, RequestContext context)
+        internal HttpMessage CreateDeleteProductRequest(int id, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Delete;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/api/ProductsAPI/Product", false);
-            if (id != null)
-            {
-                uri.AppendQuery("id", id.Value, true);
-            }
+            uri.AppendPath("/api/Products/", false);
+            uri.AppendPath(id, true);
             request.Uri = uri;
             return message;
         }

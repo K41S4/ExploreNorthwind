@@ -7,17 +7,17 @@ using System.Collections.Generic;
 namespace ExploreNorthwind.ControllersAPI
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
-    public class CategoriesAPIController : Controller
+    [Route("api/[controller]")]
+    public class CategoriesController : ControllerBase
     {
         private ICategoriesRepository categoriesRepo { get; }
-        public CategoriesAPIController(ICategoriesRepository categoriesRepo)
+        public CategoriesController(ICategoriesRepository categoriesRepo)
         {
             this.categoriesRepo = categoriesRepo;
         }
 
         [HttpGet]
-        public List<CategoryDTO> Category()
+        public List<CategoryDTO> GetAllCategories()
         {
             var dataCategories = categoriesRepo.GetAll();
             var dtoCategories = new List<CategoryDTO>();
@@ -28,15 +28,15 @@ namespace ExploreNorthwind.ControllersAPI
             return dtoCategories;
         }
 
-        [HttpGet]
-        public byte[] Picture(int id)
+        [HttpGet("{id:int}/Picture")]
+        public byte[] GetPicture(int id)
         {
             var picture = categoriesRepo.GetPictureByCategoryId(id);
             return picture;
         }
 
-        [HttpPut]
-        public IActionResult Picture(int id, byte[] picture)
+        [HttpPut("{id:int}/Picture")]
+        public IActionResult UpdatePicture(int id, [FromBody] byte[] picture)
         {
             categoriesRepo.AddPicture(id, picture);
             return Ok();

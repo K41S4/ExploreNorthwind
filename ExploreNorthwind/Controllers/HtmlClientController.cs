@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ExploreNorthwind.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace ExploreNorthwind.Controllers
@@ -7,7 +8,13 @@ namespace ExploreNorthwind.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var model = new HtmlClientViewModel()
+            {
+                GetProductsUrl = "api/Products",
+                GetCategoriesUrl = "api/Categories"
+            };
+
+            return View(model);
         }
     }
 }

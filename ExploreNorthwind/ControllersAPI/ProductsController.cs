@@ -9,19 +9,19 @@ using System.Collections.Generic;
 namespace ExploreNorthwind.ControllersAPI
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
-    public class ProductsAPIController : ControllerBase
+    [Route("api/[controller]")]
+    public class ProductsController : ControllerBase
     {
         private IProductsRepository productsRepo { get; }
         private ExploreNorthwindOptions options { get; set; }
-        public ProductsAPIController(IProductsRepository productsRepo, IOptionsSnapshot<ExploreNorthwindOptions> options)
+        public ProductsController(IProductsRepository productsRepo, IOptionsSnapshot<ExploreNorthwindOptions> options)
         {
             this.productsRepo = productsRepo;
             this.options = options.Value;
         }
 
         [HttpGet]
-        public List<ProductDTO> Product()
+        public List<ProductDTO> GetAllProducts()
         {
             var dataProducts = productsRepo.Get(options.ProductsMaxCount);
             var dtoProducts = new List<ProductDTO>();
@@ -33,15 +33,15 @@ namespace ExploreNorthwind.ControllersAPI
         }
 
         [HttpPost]
-        public IActionResult Product(ProductDTO product)
+        public IActionResult CreateProduct(ProductDTO product)
         {
             var dataProduct = product.GetProduct();
             productsRepo.Create(dataProduct);
             return Ok(product);
         }
 
-        [HttpPut]
-        public IActionResult Product(int id, [FromBody]ProductDTO product)
+        [HttpPut("{id:int}")]
+        public IActionResult UpdateProduct(int id, [FromBody] ProductDTO product)
         {
             product.ProductID = id;
             var dataProduct = product.GetProduct();
@@ -49,8 +49,8 @@ namespace ExploreNorthwind.ControllersAPI
             return Ok(product);
         }
 
-        [HttpDelete]
-        public IActionResult Product(int id)
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteProduct(int id)
         {
             productsRepo.Delete(id);
             return Ok();

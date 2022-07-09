@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Concert API",
+    "title": "ExploreNorthwindAPI",
     "version": "v1"
   },
   "paths": {
-    "/api/CategoriesAPI/Category": {
+    "/api/Categories": {
       "get": {
         "tags": [
-          "CategoriesAPI", "GetAllCategories"
+          "Categories", "GetAllCategories"
         ],
         "responses": {
           "200": {
@@ -43,15 +43,16 @@
         }
       }
     },
-    "/api/CategoriesAPI/Picture": {
+    "/api/Categories/{id}/Picture": {
       "get": {
         "tags": [
-          "CategoriesAPI", "GetPicture"
+          "Categories", "GetPicture"
         ],
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -86,12 +87,13 @@
       },
       "put": {
         "tags": [
-          "CategoriesAPI", "UpdatePicture"
+          "Categories", "UpdatePicture"
         ],
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -127,10 +129,10 @@
         }
       }
     },
-    "/api/ProductsAPI/Product": {
+    "/api/Products": {
       "get": {
         "tags": [
-          "ProductsAPI", "GetAllProducts"
+          "Products", "GetAllProducts"
         ],
         "responses": {
           "200": {
@@ -166,7 +168,7 @@
       },
       "post": {
         "tags": [
-          "ProductsAPI", "CreateProduct"
+          "Products", "CreateProduct"
         ],
         "requestBody": {
           "content": {
@@ -192,15 +194,18 @@
             "description": "Success"
           }
         }
-      },
+      }
+    },
+    "/api/Products/{id}": {
       "put": {
         "tags": [
-          "ProductsAPI", "UpdateProduct"
+          "Products", "UpdateProduct"
         ],
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -234,12 +239,13 @@
       },
       "delete": {
         "tags": [
-          "ProductsAPI", "DeleteProduct"
+          "Products", "DeleteProduct"
         ],
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"

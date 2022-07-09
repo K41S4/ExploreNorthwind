@@ -11,10 +11,10 @@ using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 
-namespace ConcertAPI
+namespace ExploreNorthwindAPI
 {
-    /// <summary> The CategoriesAPI service client. </summary>
-    public partial class CategoriesAPIClient
+    /// <summary> The Categories service client. </summary>
+    public partial class CategoriesClient
     {
         private readonly HttpPipeline _pipeline;
         private readonly Uri _endpoint;
@@ -25,19 +25,19 @@ namespace ConcertAPI
         /// <summary> The HTTP pipeline for sending and receiving REST requests and responses. </summary>
         public virtual HttpPipeline Pipeline => _pipeline;
 
-        /// <summary> Initializes a new instance of CategoriesAPIClient. </summary>
-        public CategoriesAPIClient() : this(new Uri(""), new ConcertAPIClientOptions())
+        /// <summary> Initializes a new instance of CategoriesClient. </summary>
+        public CategoriesClient() : this(new Uri(""), new ExploreNorthwindAPIClientOptions())
         {
         }
 
-        /// <summary> Initializes a new instance of CategoriesAPIClient. </summary>
+        /// <summary> Initializes a new instance of CategoriesClient. </summary>
         /// <param name="endpoint"> server parameter. </param>
         /// <param name="options"> The options for configuring the client. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="endpoint"/> is null. </exception>
-        public CategoriesAPIClient(Uri endpoint, ConcertAPIClientOptions options)
+        public CategoriesClient(Uri endpoint, ExploreNorthwindAPIClientOptions options)
         {
             Argument.AssertNotNull(endpoint, nameof(endpoint));
-            options ??= new ConcertAPIClientOptions();
+            options ??= new ExploreNorthwindAPIClientOptions();
 
             ClientDiagnostics = new ClientDiagnostics(options, true);
             _pipeline = HttpPipelineBuilder.Build(options, Array.Empty<HttpPipelinePolicy>(), Array.Empty<HttpPipelinePolicy>(), new ResponseClassifier());
@@ -64,7 +64,7 @@ namespace ConcertAPI
         /// </remarks>
         public virtual async Task<Response> GetAllCategoriesAsync(RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("CategoriesAPIClient.GetAllCategories");
+            using var scope = ClientDiagnostics.CreateScope("CategoriesClient.GetAllCategories");
             scope.Start();
             try
             {
@@ -98,7 +98,7 @@ namespace ConcertAPI
         /// </remarks>
         public virtual Response GetAllCategories(RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("CategoriesAPIClient.GetAllCategories");
+            using var scope = ClientDiagnostics.CreateScope("CategoriesClient.GetAllCategories");
             scope.Start();
             try
             {
@@ -116,9 +116,9 @@ namespace ConcertAPI
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual async Task<Response> GetPictureAsync(int? id = null, RequestContext context = null)
+        public virtual async Task<Response> GetPictureAsync(int id, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("CategoriesAPIClient.GetPicture");
+            using var scope = ClientDiagnostics.CreateScope("CategoriesClient.GetPicture");
             scope.Start();
             try
             {
@@ -136,9 +136,9 @@ namespace ConcertAPI
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Response GetPicture(int? id = null, RequestContext context = null)
+        public virtual Response GetPicture(int id, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("CategoriesAPIClient.GetPicture");
+            using var scope = ClientDiagnostics.CreateScope("CategoriesClient.GetPicture");
             scope.Start();
             try
             {
@@ -152,19 +152,19 @@ namespace ConcertAPI
             }
         }
 
+        /// <param name="id"> The Integer to use. </param>
         /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
         /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;text/json&quot;. </param>
-        /// <param name="id"> The Integer to use. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual async Task<Response> UpdatePictureAsync(RequestContent content, ContentType contentType, int? id = null, RequestContext context = null)
+        public virtual async Task<Response> UpdatePictureAsync(int id, RequestContent content, ContentType contentType, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("CategoriesAPIClient.UpdatePicture");
+            using var scope = ClientDiagnostics.CreateScope("CategoriesClient.UpdatePicture");
             scope.Start();
             try
             {
-                using HttpMessage message = CreateUpdatePictureRequest(content, contentType, id, context);
+                using HttpMessage message = CreateUpdatePictureRequest(id, content, contentType, context);
                 return await _pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
             }
             catch (Exception e)
@@ -174,19 +174,19 @@ namespace ConcertAPI
             }
         }
 
+        /// <param name="id"> The Integer to use. </param>
         /// <param name="content"> The content to send as the body of the request. Details of the request body schema are in the Remarks section below. </param>
         /// <param name="contentType"> Body Parameter content-type. Allowed values: &quot;application/*+json&quot; | &quot;application/json&quot; | &quot;text/json&quot;. </param>
-        /// <param name="id"> The Integer to use. </param>
         /// <param name="context"> The request context, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Response UpdatePicture(RequestContent content, ContentType contentType, int? id = null, RequestContext context = null)
+        public virtual Response UpdatePicture(int id, RequestContent content, ContentType contentType, RequestContext context = null)
         {
-            using var scope = ClientDiagnostics.CreateScope("CategoriesAPIClient.UpdatePicture");
+            using var scope = ClientDiagnostics.CreateScope("CategoriesClient.UpdatePicture");
             scope.Start();
             try
             {
-                using HttpMessage message = CreateUpdatePictureRequest(content, contentType, id, context);
+                using HttpMessage message = CreateUpdatePictureRequest(id, content, contentType, context);
                 return _pipeline.ProcessMessage(message, context);
             }
             catch (Exception e)
@@ -203,41 +203,37 @@ namespace ConcertAPI
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/api/CategoriesAPI/Category", false);
+            uri.AppendPath("/api/Categories", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json, text/json");
             return message;
         }
 
-        internal HttpMessage CreateGetPictureRequest(int? id, RequestContext context)
+        internal HttpMessage CreateGetPictureRequest(int id, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Get;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/api/CategoriesAPI/Picture", false);
-            if (id != null)
-            {
-                uri.AppendQuery("id", id.Value, true);
-            }
+            uri.AppendPath("/api/Categories/", false);
+            uri.AppendPath(id, true);
+            uri.AppendPath("/Picture", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "text/plain, application/json, text/json");
             return message;
         }
 
-        internal HttpMessage CreateUpdatePictureRequest(RequestContent content, ContentType contentType, int? id, RequestContext context)
+        internal HttpMessage CreateUpdatePictureRequest(int id, RequestContent content, ContentType contentType, RequestContext context)
         {
             var message = _pipeline.CreateMessage(context, ResponseClassifier200);
             var request = message.Request;
             request.Method = RequestMethod.Put;
             var uri = new RawRequestUriBuilder();
             uri.Reset(_endpoint);
-            uri.AppendPath("/api/CategoriesAPI/Picture", false);
-            if (id != null)
-            {
-                uri.AppendQuery("id", id.Value, true);
-            }
+            uri.AppendPath("/api/Categories/", false);
+            uri.AppendPath(id, true);
+            uri.AppendPath("/Picture", false);
             request.Uri = uri;
             request.Headers.Add("Content-Type", contentType.ToString());
             request.Content = content;

@@ -13,6 +13,9 @@ namespace ConsoleClient
     {
         static HttpClient client = new HttpClient();
 
+        const string GetProductsUrl = "api/Products";
+        const string GetCategoriesUrl = "api/Categories";
+
         static void ShowProducts(List<Product> products)
         {
             Console.WriteLine("Products:");
@@ -56,10 +59,10 @@ namespace ConsoleClient
 
             try
             {
-                List<Product> products = await GetEntitiesAsync<List<Product>>("api/ProductsAPI/Get");
+                List<Product> products = await GetEntitiesAsync<List<Product>>(GetProductsUrl);
                 ShowProducts(products);
 
-                List<Category> categories = await GetEntitiesAsync<List<Category>>("api/CategoriesAPI/Get");
+                List<Category> categories = await GetEntitiesAsync<List<Category>>(GetCategoriesUrl);
                 ShowCategories(categories);
             }
             catch (Exception e)
