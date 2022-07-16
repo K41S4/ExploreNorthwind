@@ -1,6 +1,7 @@
 using ExploreNorthwind.ConfigurationOptions;
 using ExploreNorthwind.Middlewares;
 using ExploreNorthwind.Middlewares.Helpers;
+using ExploreNorthwindDataAccess.Models;
 using ExploreNorthwindDataAccess.NorthwindDB;
 using ExploreNorthwindDataAccess.Repositories;
 using ExploreNorthwindDataAccess.Repositories.Interfaces;
@@ -35,12 +36,20 @@ namespace ExploreNorthwind
             var exploreNorthwindOptions = new ExploreNorthwindOptions();
             Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName).Bind(exploreNorthwindOptions);
             
-            services.AddDbContext<INorthwindContext, NorthwindContext>(options => options.UseSqlServer(exploreNorthwindOptions.NorthwindConnectionString));
+            services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(exploreNorthwindOptions.NorthwindConnectionString));
+            services.AddTransient<INorthwindContext, NorthwindContext>();
             services.AddTransient<ICategoriesRepository, CategoriesRepository>();
             services.AddTransient<IProductsRepository, ProductsRepository>();
             services.AddTransient<ISuppliersRepository, SuppliersRepository>();
             services.AddTransient<IDataOperationsHelper, DataOperationsHelper>();
             services.Configure<ExploreNorthwindOptions>(Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName));
+
+            services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<NorthwindContext>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +78,7 @@ namespace ExploreNorthwind
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseImageCaching();

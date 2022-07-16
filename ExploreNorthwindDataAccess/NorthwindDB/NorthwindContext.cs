@@ -1,9 +1,10 @@
 ﻿using ExploreNorthwindDataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ExploreNorthwindDataAccess.NorthwindDB
 {
-    public class NorthwindContext: DbContext, INorthwindContext
+    public class NorthwindContext : IdentityDbContext<AppUser, AppRole, int>, INorthwindContext
     {
         public NorthwindContext(DbContextOptions<NorthwindContext> options) : base(options)
         { }
