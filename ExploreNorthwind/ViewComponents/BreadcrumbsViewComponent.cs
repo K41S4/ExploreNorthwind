@@ -15,8 +15,10 @@ namespace ExploreNorthwind.ViewComponents
 
             JObject obj = JObject.Parse(File.ReadAllText("actionNames.json"));
 
-            var section = HttpContext.Request.RouteValues["controller"].ToString();
-            var subsection = HttpContext.Request.RouteValues["action"].ToString();
+            var section = HttpContext.Request.RouteValues["controller"]?.ToString();
+            var subsection = HttpContext.Request.RouteValues["action"]?.ToString();
+
+            if (section == null || subsection == null) return Content(string.Empty); 
 
             result.SectionAction = section;
             result.SectionName = (string)obj[section] ?? section;

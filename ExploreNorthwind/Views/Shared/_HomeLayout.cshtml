@@ -1,13 +1,23 @@
 ﻿@{
     Layout = "_Layout";
 }
-
+@if (IsSectionDefined("Scripts"))
+{
+    @await RenderSectionAsync("Scripts", required: false)
+}
 @section Header {}
 @section Footer {}
 @section Breadcrumbs {}
+@*@if (IsSectionDefined("Header"))
+{
+    @RenderSection("Header", required: false);
+}
+@if (IsSectionDefined("Breadcrumbs"))
+{
+    @RenderSection("Breadcrumbs", required: false);
+}*@
 
 @RenderBody()
-
 <div class="container" style="width: 50%; padding-top: 50px">
     <div class="row" align="center">
         <div class="col-md-4 col-md-offset-1">

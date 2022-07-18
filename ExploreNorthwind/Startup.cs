@@ -7,6 +7,7 @@ using ExploreNorthwindDataAccess.Repositories;
 using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@ namespace ExploreNorthwind
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRazorPages();
             services.AddControllersWithViews();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExploreNorthwindAPI", Version = "v1" }));
@@ -47,7 +49,7 @@ namespace ExploreNorthwind
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<NorthwindContext>();
+            }).AddDefaultUI().AddDefaultTokenProviders().AddEntityFrameworkStores<NorthwindContext>();
 
 
         }
@@ -85,6 +87,7 @@ namespace ExploreNorthwind
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "image",
                     pattern: "images/{categoryId}",
