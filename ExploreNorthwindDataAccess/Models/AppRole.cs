@@ -9,5 +9,10 @@ namespace ExploreNorthwindDataAccess.Models
 {
     public class AppRole : IdentityRole<int>
     {
+        public AppRole(): base()
+        { }
+
+        public AppRole(string name): base(name)
+        { }
     }
 }

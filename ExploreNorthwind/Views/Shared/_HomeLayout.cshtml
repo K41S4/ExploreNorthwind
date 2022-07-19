@@ -8,14 +8,6 @@
 @section Header {}
 @section Footer {}
 @section Breadcrumbs {}
-@*@if (IsSectionDefined("Header"))
-{
-    @RenderSection("Header", required: false);
-}
-@if (IsSectionDefined("Breadcrumbs"))
-{
-    @RenderSection("Breadcrumbs", required: false);
-}*@
 
 @RenderBody()
 <div class="container" style="width: 50%; padding-top: 50px">

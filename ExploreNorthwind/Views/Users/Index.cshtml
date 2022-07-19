@@ -1,0 +1,16 @@
+﻿@model IEnumerable<String>
+@{
+    ViewData["Title"] = "Users Page";
+}
+
+<h3 class="p-3">Users list</h3>
+<ul class="list-group list-group-ligh">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div>@item</div>
+            </div>
+        </li>
+    }
+</ul>

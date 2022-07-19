@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace ExploreNorthwind
 {
@@ -43,6 +44,7 @@ namespace ExploreNorthwind
             services.AddTransient<ICategoriesRepository, CategoriesRepository>();
             services.AddTransient<IProductsRepository, ProductsRepository>();
             services.AddTransient<ISuppliersRepository, SuppliersRepository>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IDataOperationsHelper, DataOperationsHelper>();
             services.Configure<ExploreNorthwindOptions>(Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName));
 
@@ -55,7 +57,7 @@ namespace ExploreNorthwind
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
             logger.LogInformation("Application Startup");
             logger.LogInformation($"App location: {env.ContentRootPath}");
@@ -96,6 +98,39 @@ namespace ExploreNorthwind
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            CreateRoles(serviceProvider).Wait();
+        }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            string[] roleNames = { "Admin" };
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    roleResult = await RoleManager.CreateAsync(new AppRole(roleName));
+                }
+            }
+
+            var _admin = await UserManager.FindByEmailAsync("admin@admin.com");
+            if (_admin == null)
+            {
+                var admin = new AppUser
+                {
+                    UserName = "admin@admin.com",
+                    Email = "admin@admin.com"
+                };
+
+                var createAdmin = await UserManager.CreateAsync(admin, "Admin2022!");
+                if (createAdmin.Succeeded)
+                    await UserManager.AddToRoleAsync(admin, "Admin");
+            }
         }
     }
 }

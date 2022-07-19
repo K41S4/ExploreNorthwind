@@ -9,6 +9,7 @@ namespace ExploreNorthwindDataAccess.NorthwindDB
         DbSet<Category> Categories { get; set; }
         DbSet<Product> Products { get; set; }
         DbSet<Supplier> Suppliers { get; set; }
+        DbSet<AppUser> Users { get; set; }
         int SaveChanges();
     }
 }
