@@ -1,3 +1,4 @@
+using ExploreNorthwind.Areas.Identity;
 using ExploreNorthwind.ConfigurationOptions;
 using ExploreNorthwind.Middlewares;
 using ExploreNorthwind.Middlewares.Helpers;
@@ -8,6 +9,7 @@ using ExploreNorthwindDataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +47,7 @@ namespace ExploreNorthwind
             services.AddTransient<IProductsRepository, ProductsRepository>();
             services.AddTransient<ISuppliersRepository, SuppliersRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IDataOperationsHelper, DataOperationsHelper>();
             services.Configure<ExploreNorthwindOptions>(Configuration.GetSection(ExploreNorthwindOptions.ExploreNorthwindOptionsName));
 
