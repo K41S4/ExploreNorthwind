@@ -6,8 +6,12 @@ using ExploreNorthwindDataAccess.Models;
 using ExploreNorthwindDataAccess.NorthwindDB;
 using ExploreNorthwindDataAccess.Repositories;
 using ExploreNorthwindDataAccess.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Threading.Tasks;
@@ -33,6 +38,8 @@ namespace ExploreNorthwind
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(AzureADDefaults.AuthenticationScheme).AddAzureAD(options => { Configuration.Bind("AzureAd", options); options.CookieSchemeName = IdentityConstants.ExternalScheme; });
+            services.ConfigureExternalCookie(options => { options.Cookie.SameSite = SameSiteMode.None; });
             services.AddRazorPages();
             services.AddControllersWithViews();
 
@@ -56,12 +63,17 @@ namespace ExploreNorthwind
                 options.User.RequireUniqueEmail = true;
             }).AddDefaultUI().AddDefaultTokenProviders().AddEntityFrameworkStores<NorthwindContext>();
 
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
+            app.Use((context, next) =>
+            {
+                context.Request.Scheme = "https";
+                return next();
+            });
+
             logger.LogInformation("Application Startup");
             logger.LogInformation($"App location: {env.ContentRootPath}");
             logger.LogInformation($"Configuration values:\nProductsMaxCount: {Configuration["ExploreNorthwindOptions:ProductsMaxCount"]}");
